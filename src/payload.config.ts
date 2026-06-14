@@ -7,6 +7,10 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Services } from './collections/Services'
+import { Gallery } from './collections/Gallery'
+import { Submissions } from './collections/Submissions'
+import { Settings } from './globals/Settings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -18,7 +22,8 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Users, Media, Services, Gallery, Submissions],
+  globals: [Settings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -26,8 +31,9 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URL || '',
+      connectionString: process.env.DATABASE_URI || process.env.DATABASE_URL || '',
     },
+    push: process.env.NODE_ENV !== 'production',
   }),
   sharp,
   plugins: [],

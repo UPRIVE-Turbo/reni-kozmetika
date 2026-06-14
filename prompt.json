@@ -1,0 +1,40 @@
+{
+  "project": {
+    "name": "RENI Kozmetika",
+    "slug": "reni-kozmetika",
+    "language": "hu"
+  },
+  "business": {
+    "name": "RENI Kozmetika",
+    "industry": "Kozmetika",
+    "city": "Győr",
+    "tier": "Tier 1",
+    "contact": {
+      "phone": "+36 30 964 8446",
+      "email": "meszarosnerottrenata@gmail.com",
+      "address": "Ifjúság körút 83, Győr",
+      "facebook": null,
+      "instagram": "https://www.instagram.com/gmail.com"
+    }
+  },
+  "design": {
+    "colors": {
+      "primary": "#7B3C4A",
+      "secondary": "#FFF8F0"
+    },
+    "fonts": {
+      "heading": "Lora",
+      "body": "Open Sans"
+    }
+  },
+  "sections": [
+    "hero",
+    "services",
+    "about",
+    "gallery",
+    "booking-form",
+    "contact",
+    "footer"
+  ],
+  "full_prompt": "Készíts egy magyar nyelvű, egyoldalas landing page-et egy kozmetikai stúdiónak:\n\nAZ ÜZLET ADATAI:\n- Név: RENI Kozmetika\n- Cím: Ifjúság körút 83, Győr (Adyváros)\n- Telefon: +36 30 964 8446\n- Email: meszarosnerottrenata@gmail.com\n- Profil: Kozmetikai kezelések, arcápolás\n\nDESIGN:\n- Stílus: Modern, meleg, nőies\n- Színek: Bordó (#7B3C4A) fejlécekhez, halvány rózsaszín (#F4A5A5) kiemelésekhez, krém (#FFF8F0) háttérhez, sötétbarna (#3D2817) szöveghez\n- Betűtípus: Elegáns, olvasható (pl. Lora címekhez, Open Sans szöveghez)\n\nFELÉPÍTÉS (egyetlen görgethető oldal):\n1. Hero szekció: \"RENI Kozmetika — Győr, Adyváros\", szlogen (\"Szépség és önbizalom\"), CTA gomb\n2. Szolgáltatások: Kozmetikai kezelések felsorolása rövid leírással\n3. Bemutatkozás: Renáta bemutatása, tapasztalat, képzettségek\n4. Galéria: 4-6 kép placeholder\n5. Időpontfoglalás űrlap: Név, telefon, kívánt szolgáltatás, kívánt időpont, üzenet\n6. Elérhetőség: Telefon, email, cím, nyitvatartás, Google Maps\n7. Lábléc: Facebook, telefon, cím, © 2026\n\nHANGNEM: Kedves, bizalomkeltő, professzionális.\n\nTECHNIKAI: Mobilbarát, reszponzív."
+}

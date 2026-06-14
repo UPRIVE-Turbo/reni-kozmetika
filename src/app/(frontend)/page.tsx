@@ -1,59 +1,65 @@
-import { headers as getHeaders } from 'next/headers.js'
-import Image from 'next/image'
 import { getPayload } from 'payload'
-import React from 'react'
-import { fileURLToPath } from 'url'
-
 import config from '@/payload.config'
-import './styles.css'
+
+import Navbar from './components/Navbar'
+import Hero from './components/Hero'
+import Services from './components/Services'
+import About from './components/About'
+import Gallery from './components/Gallery'
+import BookingContact from './components/BookingContact'
+import Footer from './components/Footer'
+
+export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
-  const headers = await getHeaders()
   const payloadConfig = await config
   const payload = await getPayload({ config: payloadConfig })
-  const { user } = await payload.auth({ headers })
 
-  const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`
+  const [settings, servicesResult, galleryResult] = await Promise.all([
+    payload.findGlobal({ slug: 'settings' }),
+    payload.find({ collection: 'services', sort: 'order', limit: 20 }),
+    payload.find({ collection: 'gallery', sort: 'order', limit: 6, depth: 1 }),
+  ])
+
+  const services = servicesResult.docs.map((doc) => ({
+    id: doc.id,
+    name: doc.name,
+    description: doc.description,
+    price: doc.price,
+  }))
+
+  const galleryImages = galleryResult.docs
+    .map((doc) => {
+      const media = typeof doc.image === 'object' ? doc.image : null
+      return media?.url
+        ? {
+            id: doc.id,
+            url: media.url,
+            alt: doc.alt,
+          }
+        : null
+    })
+    .filter((img): img is { id: number; url: string; alt: string } => img !== null)
+
+  const settingsData = {
+    phone: settings.phone || '+36 30 964 8446',
+    email: settings.email || 'meszarosnerottrenata@gmail.com',
+    address: settings.address || 'Ifjúság körút 83, 9023 Győr',
+    openingHours: settings.openingHours,
+    mapEmbedUrl: settings.mapEmbedUrl,
+    facebook: settings.facebook,
+    instagram: settings.instagram,
+  }
 
   return (
-    <div className="home">
-      <div className="content">
-        <picture>
-          <source srcSet="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-favicon.svg" />
-          <Image
-            alt="Payload Logo"
-            height={65}
-            src="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-favicon.svg"
-            width={65}
-          />
-        </picture>
-        {!user && <h1>Welcome to your new project.</h1>}
-        {user && <h1>Welcome back, {user.email}</h1>}
-        <div className="links">
-          <a
-            className="admin"
-            href={payloadConfig.routes.admin}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Go to admin panel
-          </a>
-          <a
-            className="docs"
-            href="https://payloadcms.com/docs"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Documentation
-          </a>
-        </div>
-      </div>
-      <div className="footer">
-        <p>Update this page by editing</p>
-        <a className="codeLink" href={fileURL}>
-          <code>app/(frontend)/page.tsx</code>
-        </a>
-      </div>
-    </div>
+    <>
+      <Navbar />
+      <Hero />
+      <Services services={services} />
+      <About />
+      <Gallery images={galleryImages.length > 0 ? galleryImages : undefined} />
+      <BookingContact settings={settingsData} services={services} />
+      <Footer settings={settingsData} />
+    </>
   )
 }
