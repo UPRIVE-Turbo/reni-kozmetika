@@ -95,9 +95,11 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     settings: Setting;
+    'page-content': PageContent;
   };
   globalsSelect: {
     settings: SettingsSelect<false> | SettingsSelect<true>;
+    'page-content': PageContentSelect<false> | PageContentSelect<true>;
   };
   locale: null;
   widgets: {
@@ -177,11 +179,14 @@ export interface Media {
  */
 export interface Service {
   id: number;
+  _order?: string | null;
   name: string;
   description?: string | null;
   price?: string | null;
+  /**
+   * Phosphor ikon neve, pl. "sparkle", "drop", "flower-lotus", "eye".
+   */
   icon?: string | null;
-  order?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -191,9 +196,13 @@ export interface Service {
  */
 export interface Gallery {
   id: number;
+  _order?: string | null;
   image: number | Media;
   alt: string;
-  order?: number | null;
+  /**
+   * Megjelenik a képen ráhúzáskor, csak az első/kiemelt képnél jellemző.
+   */
+  caption?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -343,11 +352,11 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "services_select".
  */
 export interface ServicesSelect<T extends boolean = true> {
+  _order?: T;
   name?: T;
   description?: T;
   price?: T;
   icon?: T;
-  order?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -356,9 +365,10 @@ export interface ServicesSelect<T extends boolean = true> {
  * via the `definition` "gallery_select".
  */
 export interface GallerySelect<T extends boolean = true> {
+  _order?: T;
   image?: T;
   alt?: T;
-  order?: T;
+  caption?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -430,6 +440,101 @@ export interface Setting {
   facebook?: string | null;
   instagram?: string | null;
   mapEmbedUrl?: string | null;
+  /**
+   * A fejléc és lábláb logójának két része (pl. "RENI" + "Kozmetika").
+   */
+  branding?: {
+    namePrimary?: string | null;
+    nameSecondary?: string | null;
+  };
+  navigation?: {
+    /**
+     * A fejléc menüpontjai, az oldalon belüli szekciókra mutatva.
+     */
+    links?:
+      | {
+          label: string;
+          href: string;
+          id?: string | null;
+        }[]
+      | null;
+    ctaLabel?: string | null;
+    mobileCtaLabel?: string | null;
+  };
+  footer?: {
+    copyrightText?: string | null;
+  };
+  seo?: {
+    metaTitle?: string | null;
+    metaDescription?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-content".
+ */
+export interface PageContent {
+  id: number;
+  /**
+   * A nyitóképernyő tartalma, a legtetején.
+   */
+  hero?: {
+    badge?: string | null;
+    titleLine1?: string | null;
+    titleWord1?: string | null;
+    titleConnector?: string | null;
+    titleWord2?: string | null;
+    titleLine2?: string | null;
+    subtitle?: string | null;
+    ctaPrimaryLabel?: string | null;
+    ctaSecondaryLabel?: string | null;
+    image?: (number | null) | Media;
+    imageAlt?: string | null;
+    ratingScore?: string | null;
+    ratingLabel?: string | null;
+  };
+  about?: {
+    kicker?: string | null;
+    heading?: string | null;
+    headingHighlight?: string | null;
+    paragraphs?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    image?: (number | null) | Media;
+    imageAlt?: string | null;
+    /**
+     * Legfeljebb 2 elem — a design egy elválasztóvonalat tartalmaz.
+     */
+    stats?:
+      | {
+          value: string;
+          label: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  servicesSection?: {
+    heading?: string | null;
+    headingHighlight?: string | null;
+    description?: string | null;
+    footnote?: string | null;
+  };
+  gallerySection?: {
+    heading?: string | null;
+    headingHighlight?: string | null;
+    subtitle?: string | null;
+  };
+  contactSection?: {
+    heading?: string | null;
+    headingHighlight?: string | null;
+    description?: string | null;
+    availabilityHeading?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -446,6 +551,107 @@ export interface SettingsSelect<T extends boolean = true> {
   facebook?: T;
   instagram?: T;
   mapEmbedUrl?: T;
+  branding?:
+    | T
+    | {
+        namePrimary?: T;
+        nameSecondary?: T;
+      };
+  navigation?:
+    | T
+    | {
+        links?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+        ctaLabel?: T;
+        mobileCtaLabel?: T;
+      };
+  footer?:
+    | T
+    | {
+        copyrightText?: T;
+      };
+  seo?:
+    | T
+    | {
+        metaTitle?: T;
+        metaDescription?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "page-content_select".
+ */
+export interface PageContentSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        badge?: T;
+        titleLine1?: T;
+        titleWord1?: T;
+        titleConnector?: T;
+        titleWord2?: T;
+        titleLine2?: T;
+        subtitle?: T;
+        ctaPrimaryLabel?: T;
+        ctaSecondaryLabel?: T;
+        image?: T;
+        imageAlt?: T;
+        ratingScore?: T;
+        ratingLabel?: T;
+      };
+  about?:
+    | T
+    | {
+        kicker?: T;
+        heading?: T;
+        headingHighlight?: T;
+        paragraphs?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        image?: T;
+        imageAlt?: T;
+        stats?:
+          | T
+          | {
+              value?: T;
+              label?: T;
+              id?: T;
+            };
+      };
+  servicesSection?:
+    | T
+    | {
+        heading?: T;
+        headingHighlight?: T;
+        description?: T;
+        footnote?: T;
+      };
+  gallerySection?:
+    | T
+    | {
+        heading?: T;
+        headingHighlight?: T;
+        subtitle?: T;
+      };
+  contactSection?:
+    | T
+    | {
+        heading?: T;
+        headingHighlight?: T;
+        description?: T;
+        availabilityHeading?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

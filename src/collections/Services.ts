@@ -2,14 +2,19 @@ import type { CollectionConfig } from 'payload'
 
 export const Services: CollectionConfig = {
   slug: 'services',
+  labels: {
+    singular: 'Szolgáltatás',
+    plural: 'Szolgáltatások',
+  },
   admin: {
+    group: 'Tartalom',
     useAsTitle: 'name',
     defaultColumns: ['name', 'price', 'order'],
   },
   access: {
     read: () => true,
   },
-  defaultSort: 'order',
+  orderable: true,
   fields: [
     {
       name: 'name',
@@ -31,12 +36,9 @@ export const Services: CollectionConfig = {
       name: 'icon',
       type: 'text',
       label: 'Ikon (Phosphor icon név, pl. sparkle)',
-    },
-    {
-      name: 'order',
-      type: 'number',
-      label: 'Sorrend',
-      defaultValue: 0,
+      admin: {
+        description: 'Phosphor ikon neve, pl. "sparkle", "drop", "flower-lotus", "eye".',
+      },
     },
   ],
 }

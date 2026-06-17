@@ -2,14 +2,19 @@ import type { CollectionConfig } from 'payload'
 
 export const Gallery: CollectionConfig = {
   slug: 'gallery',
+  labels: {
+    singular: 'Galéria kép',
+    plural: 'Galéria',
+  },
   admin: {
+    group: 'Tartalom',
     useAsTitle: 'alt',
-    defaultColumns: ['image', 'alt', 'order'],
+    defaultColumns: ['image', 'alt', 'caption'],
   },
   access: {
     read: () => true,
   },
-  defaultSort: 'order',
+  orderable: true,
   fields: [
     {
       name: 'image',
@@ -25,10 +30,12 @@ export const Gallery: CollectionConfig = {
       label: 'Alternatív szöveg',
     },
     {
-      name: 'order',
-      type: 'number',
-      label: 'Sorrend',
-      defaultValue: 0,
+      name: 'caption',
+      type: 'text',
+      label: 'Felirat (opcionális)',
+      admin: {
+        description: 'Megjelenik a képen ráhúzáskor, csak az első/kiemelt képnél jellemző.',
+      },
     },
   ],
 }

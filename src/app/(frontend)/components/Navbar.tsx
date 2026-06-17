@@ -2,15 +2,39 @@
 
 import { useEffect, useState } from 'react'
 
-const links = [
-  { href: '#szolgaltatasok', label: 'Szolgáltatások' },
-  { href: '#bemutatkozas', label: 'Rólam' },
-  { href: '#galeria', label: 'Galéria' },
+export type NavbarBranding = {
+  namePrimary?: string | null
+  nameSecondary?: string | null
+} | null
+
+export type NavbarNavigation = {
+  links?: { label: string; href: string }[] | null
+  ctaLabel?: string | null
+  mobileCtaLabel?: string | null
+} | null
+
+const defaultLinks = [
+  { label: 'Szolgáltatások', href: '#szolgaltatasok' },
+  { label: 'Rólam', href: '#bemutatkozas' },
+  { label: 'Galéria', href: '#galeria' },
 ]
 
-export default function Navbar() {
+export default function Navbar({
+  branding,
+  navigation,
+}: {
+  branding?: NavbarBranding
+  navigation?: NavbarNavigation
+}) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+
+  const links =
+    navigation?.links && navigation.links.length > 0 ? navigation.links : defaultLinks
+  const ctaLabel = navigation?.ctaLabel || 'Időpontfoglalás'
+  const mobileCtaLabel = navigation?.mobileCtaLabel || 'Időpontot kérek'
+  const namePrimary = branding?.namePrimary || 'RENI'
+  const nameSecondary = branding?.nameSecondary || 'Kozmetika'
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
@@ -34,11 +58,11 @@ export default function Navbar() {
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-4 flex justify-between items-center">
           <a
             href="#"
-            className="font-serif text-2xl font-medium tracking-tight text-brand-burgundy flex items-center gap-2"
+            className="font-serif text-2xl font-medium tracking-tight text-brand-burgundy flex items-center gap-2 transition-transform hover:scale-[1.02]"
           >
-            RENI{' '}
+            {namePrimary}{' '}
             <span className="text-brand-brown/50 text-sm font-sans tracking-widest uppercase mt-1">
-              Kozmetika
+              {nameSecondary}
             </span>
           </a>
 
@@ -57,7 +81,7 @@ export default function Navbar() {
               href="#foglalas"
               className="bg-brand-burgundy text-brand-cream px-6 py-2.5 rounded-full hover:bg-brand-brown transition-colors shadow-[0_4px_14px_0_rgba(123,60,74,0.2)] hover:shadow-[0_6px_20px_rgba(123,60,74,0.3)] hover:-translate-y-[1px] active:scale-[0.98] duration-200"
             >
-              Időpontfoglalás
+              {ctaLabel}
             </a>
           </div>
 
@@ -98,7 +122,7 @@ export default function Navbar() {
           className="text-brand-burgundy font-medium mt-4 border-b border-brand-burgundy pb-1"
           onClick={() => setMenuOpen(false)}
         >
-          Időpontot kérek
+          {mobileCtaLabel}
         </a>
       </div>
     </>

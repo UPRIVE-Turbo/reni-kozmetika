@@ -7,21 +7,35 @@ export type ServiceItem = {
   price?: string | null
 }
 
+export type ServicesSectionContent = {
+  heading?: string | null
+  headingHighlight?: string | null
+  description?: string | null
+  footnote?: string | null
+}
+
 const delays = [0, 100, 200, 300] as const
 
-export default function Services({ services }: { services: ServiceItem[] }) {
+export default function Services({
+  services,
+  content,
+}: {
+  services: ServiceItem[]
+  content?: ServicesSectionContent
+}) {
   return (
     <section id="szolgaltatasok" className="py-24 md:py-32 relative">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <Reveal className="flex flex-col md:flex-row justify-between items-end mb-16 lg:mb-24 gap-6">
           <div className="max-w-2xl">
             <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-brand-burgundy tracking-tight leading-none mb-6">
-              Személyre Szabott
-              <br /> <span className="italic font-light">Kezelések</span>
+              {content?.heading || 'Személyre Szabott'}
+              <br />{' '}
+              <span className="italic font-light">{content?.headingHighlight || 'Kezelések'}</span>
             </h2>
             <p className="text-brand-brown/70 text-lg max-w-lg font-light leading-relaxed">
-              Minden arcbőr más törődést igényel. Szolgáltatásaim fókuszában az egészséges,
-              ragyogó bőr elérése áll, prémium hatóanyagokkal.
+              {content?.description ||
+                'Minden arcbőr más törődést igényel. Szolgáltatásaim fókuszában az egészséges, ragyogó bőr elérése áll, prémium hatóanyagokkal.'}
             </p>
           </div>
           <div className="hidden md:block">
@@ -60,8 +74,8 @@ export default function Services({ services }: { services: ServiceItem[] }) {
 
         <Reveal delay={300} className="mt-12 text-center">
           <p className="text-brand-brown/60 text-sm italic">
-            Minden kezelést alapos bőrdiagnosztika előz meg. A teljes árlista a szalonban
-            tekinthető meg.
+            {content?.footnote ||
+              'Minden kezelést alapos bőrdiagnosztika előz meg. A teljes árlista a szalonban tekinthető meg.'}
           </p>
         </Reveal>
       </div>

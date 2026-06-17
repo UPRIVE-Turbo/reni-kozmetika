@@ -2,7 +2,12 @@ import type { CollectionConfig } from 'payload'
 
 export const Submissions: CollectionConfig = {
   slug: 'submissions',
+  labels: {
+    singular: 'Megkeresés',
+    plural: 'Megkeresések',
+  },
   admin: {
+    group: 'Megkeresések',
     useAsTitle: 'name',
     defaultColumns: ['name', 'phone', 'service', 'preferredDate', 'createdAt'],
   },

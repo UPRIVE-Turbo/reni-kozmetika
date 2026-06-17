@@ -2,6 +2,8 @@ import React from 'react'
 import Script from 'next/script'
 import { Lora, Open_Sans } from 'next/font/google'
 import type { Metadata } from 'next'
+import { getPayload } from 'payload'
+import config from '@/payload.config'
 import './styles.css'
 
 const lora = Lora({
@@ -17,17 +19,26 @@ const openSans = Open_Sans({
   variable: '--font-open-sans',
 })
 
-export const metadata: Metadata = {
-  title: 'RENI Kozmetika | Szépség és Önbizalom | Győr, Adyváros',
-  description:
-    'Professzionális kozmetikai kezelések, arcápolás Győrben, Adyvárosban. Foglaljon időpontot Mészárosné Rött Renátához.',
-  openGraph: {
-    title: 'RENI Kozmetika | Szépség és Önbizalom',
-    description:
-      'Professzionális kozmetikai kezelések, arcápolás Győrben, Adyvárosban. Foglaljon időpontot még most.',
-    locale: 'hu_HU',
-    type: 'website',
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  const payloadConfig = await config
+  const payload = await getPayload({ config: payloadConfig })
+  const settings = await payload.findGlobal({ slug: 'settings' })
+
+  const title = settings.seo?.metaTitle || 'RENI Kozmetika | Szépség és Önbizalom | Győr, Adyváros'
+  const description =
+    settings.seo?.metaDescription ||
+    'Professzionális kozmetikai kezelések, arcápolás Győrben, Adyvárosban. Foglaljon időpontot Mészárosné Rött Renátához.'
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      locale: 'hu_HU',
+      type: 'website',
+    },
+  }
 }
 
 export default function RootLayout(props: { children: React.ReactNode }) {

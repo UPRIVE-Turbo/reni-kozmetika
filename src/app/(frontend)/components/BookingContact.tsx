@@ -10,12 +10,21 @@ export type SettingsData = {
   mapEmbedUrl?: string | null
 }
 
+export type ContactSectionContent = {
+  heading?: string | null
+  headingHighlight?: string | null
+  description?: string | null
+  availabilityHeading?: string | null
+}
+
 export default function BookingContact({
   settings,
   services,
+  content,
 }: {
   settings: SettingsData
   services: ServiceItem[]
+  content?: ContactSectionContent
 }) {
   const telLink = `tel:${settings.phone.replace(/\s/g, '')}`
 
@@ -33,11 +42,14 @@ export default function BookingContact({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
           <Reveal>
             <h2 className="font-serif text-4xl md:text-5xl tracking-tight mb-4">
-              Ideje a <span className="italic font-light text-brand-pink">megújulásnak</span>
+              {content?.heading || 'Ideje a'}{' '}
+              <span className="italic font-light text-brand-pink">
+                {content?.headingHighlight || 'megújulásnak'}
+              </span>
             </h2>
             <p className="text-brand-cream/70 font-light mb-12">
-              Adja meg adatait, és hamarosan felveszem Önnel a kapcsolatot a pontos időpont
-              egyeztetése céljából.
+              {content?.description ||
+                'Adja meg adatait, és hamarosan felveszem Önnel a kapcsolatot a pontos időpont egyeztetése céljából.'}
             </p>
 
             <BookingForm services={services} />
@@ -46,7 +58,8 @@ export default function BookingContact({
           <Reveal delay={200} className="flex flex-col justify-between">
             <div>
               <h3 className="font-serif text-2xl mb-8 flex items-center gap-3">
-                <i className="ph-thin ph-map-pin text-brand-pink text-3xl" /> Elérhetőség
+                <i className="ph-thin ph-map-pin text-brand-pink text-3xl" />{' '}
+                {content?.availabilityHeading || 'Elérhetőség'}
               </h3>
 
               <div className="space-y-6 font-light">

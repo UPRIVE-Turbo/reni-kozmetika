@@ -29,15 +29,28 @@ export type GalleryImage = {
   id: string | number
   url: string
   alt: string
+  caption?: string | null
 }
 
-export default function Gallery({ images }: { images?: GalleryImage[] }) {
+export type GallerySectionContent = {
+  heading?: string | null
+  headingHighlight?: string | null
+  subtitle?: string | null
+}
+
+export default function Gallery({
+  images,
+  content,
+}: {
+  images?: GalleryImage[]
+  content?: GallerySectionContent
+}) {
   const items =
     images && images.length > 0
       ? images.map((img, i) => ({
           src: img.url,
           alt: img.alt,
-          caption: i === 0 ? 'Nyugodt környezet' : undefined,
+          caption: img.caption,
           className:
             i === 0
               ? 'col-span-2 row-span-2'
@@ -52,10 +65,12 @@ export default function Gallery({ images }: { images?: GalleryImage[] }) {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <Reveal className="text-center mb-16">
           <h2 className="font-serif text-4xl md:text-5xl text-brand-burgundy tracking-tight leading-none mb-4">
-            A Lenyugvás <span className="italic font-light">Szigete</span>
+            {content?.heading || 'A Lenyugvás'}{' '}
+            <span className="italic font-light">{content?.headingHighlight || 'Szigete'}</span>
           </h2>
           <p className="text-brand-brown/70 flex justify-center items-center gap-2">
-            Pillantson be a szalon hangulatába <i className="ph-fill ph-drop text-brand-pink" />
+            {content?.subtitle || 'Pillantson be a szalon hangulatába'}{' '}
+            <i className="ph-fill ph-drop text-brand-pink" />
           </p>
         </Reveal>
 
